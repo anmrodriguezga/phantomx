@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- links -->
+    <xacro:macro name="link_macro" params="name origin_xyz origin_rpy meshfile_visual meshfile_col mass ixx ixy ixz iyy iyz izz">
+        <link name="${name}">
+            <inertial>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+                <mass value="${mass}"/>
+                <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}"/>
+            </inertial>
+            <visual>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+                <geometry>
+                    <mesh filename="${meshfile_visual}"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="${44/255} ${44/255} ${44/255} 1.0"/>
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+                <geometry>
+                    <mesh filename="${meshfile_col}"/>
+                </geometry>
+            </collision>
+        </link>
+        <gazebo reference="${name}">
+            <material>Gazebo/DarkGrey</material>
+        </gazebo>
+    </xacro:macro>
+
+    <!-- joints without mimic -->
+    <xacro:macro name="joint_macro" params="name type parent_link child_link axis lower upper vel effort origin_xyz origin_rpy">
+        <joint name="${name}" type="${type}">
+            <parent link="${parent_link}"/>
+            <child link="${child_link}"/>
+            <axis xyz="${axis}"/>
+            <limit lower="${lower}" upper="${upper}" velocity="${vel}" effort="${effort}"/>
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+        </joint>
+        <transmission name="trans_${name}">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_${name}">
+                <mechanicalReduction>1</mechanicalReduction>
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+
+    <!-- joints with mimic -->
+    <xacro:macro name="mimic_joint_macro" params="name type parent_link child_link axis lower upper vel effort origin_xyz origin_rpy 
+    mimic_joint m_multiplier m_offset">
+        <joint name="${name}" type="${type}">
+            <parent link="${parent_link}"/>
+            <child link="${child_link}"/>
+            <axis xyz="${axis}"/>
+            <limit lower="${lower}" upper="${upper}" velocity="${vel}" effort="${effort}"/>
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+            <mimic joint="${mimic_joint}" multiplier="${m_multiplier}" offset="${m_offset}"/>
+        </joint>
+        <transmission name="trans_${name}">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_${name}">
+                <mechanicalReduction>1</mechanicalReduction>
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+
+    <!-- noa -->
+    <xacro:macro name="create_noa" params="name origin_rpy origin_xyz parent">
+        <link name="${name}">
+        <!-- <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+            </visual> -->
+        </link>
+        <joint name="Tool_${name}" type="fixed">
+            <origin rpy="${origin_rpy}" xyz="${origin_xyz}"/>
+            <parent link="${parent}"/>
+            <child link="${name}"/>
+        </joint>
+    </xacro:macro>
+
+</robot>

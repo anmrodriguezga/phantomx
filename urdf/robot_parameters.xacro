@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="link0_name" value="pincherBase"/>
+    <xacro:property name="link1_name" value="shoulderServo"/>
+    <xacro:property name="link2_name" value="lowerArm"/>
+    <xacro:property name="link3_name" value="upperArm"/>
+    <xacro:property name="link4_name" value="gripperBody"/>
+    <xacro:property name="link5_name" value="leftFinger"/>
+    <xacro:property name="link6_name" value="rightFinger"/>
+    
+
+    <xacro:property name="joint1_name" value="joint1"/>
+    <xacro:property name="joint2_name" value="joint2"/>
+    <xacro:property name="joint3_name" value="joint3"/>
+    <xacro:property name="joint4_name" value="joint4"/>
+    <xacro:property name="joint5_name" value="joint5"/>
+    <xacro:property name="joint6_name" value="joint6"/>    
+    
+</robot>

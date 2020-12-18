@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="robot_name"/>
+    <arg name="init_pose"/>
+    
+    <!-- Load controllers -->
+    <rosparam command="load" file="$(find phantomx)/config/joints.yaml"/>
+
+    <!-- Controllers -->
+    <node name="controller_spawner" 
+        pkg="controller_manager" 
+        type="spawner"  
+        output="screen" 
+        respawn="false"
+        args="
+        joint_state_controller
+        joint1_position_controller
+        joint2_position_controller
+        joint3_position_controller
+        joint4_position_controller
+        gripper_position_controller
+        --timeout 60">            
+    </node>
+    
+        <!-- Spawn Robot Model -->
+        <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model"
+            args="$(arg init_pose) -urdf -param /robot_description -model $(arg robot_name)"
+            output="screen" respawn="false"/>
+
+        <!-- State Publisher -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+</launch>

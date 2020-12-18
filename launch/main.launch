@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+        
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <arg name="use_sim_time" value="true"/>            
+        </include>
+    
+
+    <include file="$(find phantomx)/launch/robots.launch"/>
+    
+
+</launch>
